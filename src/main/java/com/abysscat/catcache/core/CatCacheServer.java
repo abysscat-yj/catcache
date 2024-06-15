@@ -1,5 +1,6 @@
-package com.abysscat.catcache;
+package com.abysscat.catcache.core;
 
+import com.abysscat.catcache.CatPlugin;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * catcache server.
+ *
+ * 作为插件统一管理
  *
  * @Author: abysscat-yj
  * @Create: 2024/6/13 0:35

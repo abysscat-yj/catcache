@@ -1,4 +1,4 @@
-package com.abysscat.catcache;
+package com.abysscat.catcache.core;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
