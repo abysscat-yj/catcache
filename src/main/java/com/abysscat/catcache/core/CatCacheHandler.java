@@ -24,8 +24,6 @@ public class CatCacheHandler extends SimpleChannelInboundHandler<String> {
 
 	private static final String CRLF = "\r\n";
 	private static final String OK = "OK";
-	private static final String INFO = "CatCache Server[v1.0.0], created by abysscat." + CRLF
-			+ "Mock Redis Server, at 2024-06-13 in Beijing." + CRLF;
 
 	public static final CatCache cache = new CatCache();
 
@@ -37,99 +35,36 @@ public class CatCacheHandler extends SimpleChannelInboundHandler<String> {
 		System.out.println("CatCacheHandler => " + String.join(",", args));
 		String cmd = args[2].toUpperCase();
 
-		switch (cmd) {
-			// *1,$7,COMMAND
-			case "COMMAND" -> writeByteBuf(ctx, "*2"
-					+ CRLF + "$7"
-					+ CRLF + "COMMAND"
-					+ CRLF + "$4"
-					+ CRLF + "PING"
-					+ CRLF);
-			// *1,$4,PING
-			// *2,$4,PING,$3,abc
-			case "PING" -> {
-				String ret = "PONG";
-				if (args.length >= 5) {
-					ret = args[4];
-				}
-				simpleString(ctx, ret);
-			}
-			// *1,$4,INFO
-			case "INFO" -> bulkString(ctx, INFO);
-			// *2,$3,get,$1,a
-			case "GET" -> {
-				String value = cache.get(args[4]);
-				bulkString(ctx, value);
-			}
-			// *3,$3,set,$1,a,$3,111
-			case "SET" -> {
-				cache.set(args[4], args[6]);
+		Command command = Commands.get(cmd);
+		if (command != null) {
+			Reply<?> reply = command.exec(cache, args);
+			System.out.println("CMD[" + cmd + "] => " + reply.type + " => " + reply.value);
+			replyContext(ctx, reply);
+		} else {
+			Reply<?> reply = Reply.error("ERR unsupported command '" + cmd + "'");
+			replyContext(ctx, reply);
+		}
+	}
+
+	private void replyContext(ChannelHandlerContext ctx, Reply<?> reply) {
+		switch (reply.getType()) {
+			case INT:
+				integer(ctx, (Integer) reply.getValue());
+				break;
+			case ERROR:
+				error(ctx, (String) reply.getValue());
+				break;
+			case SIMPLE_STRING:
+				simpleString(ctx, (String) reply.getValue());
+				break;
+			case BULK_STRING:
+				bulkString(ctx, (String) reply.getValue());
+				break;
+			case ARRAY:
+				array(ctx, (String[]) reply.getValue());
+				break;
+			default:
 				simpleString(ctx, OK);
-			}
-			// *2,$6,strlen,$1,a
-			case "STRLEN" -> {
-				String value = cache.get(args[4]);
-				integer(ctx, value == null ? 0 : value.length());
-			}
-			// *3,$3,del,$1,a,$1,b
-			case "DEL" -> {
-				int len = (args.length - 3) / 2;
-				String[] keys = new String[len];
-				for (int i = 0; i < len; i++) {
-					keys[i] = args[4 + i * 2];
-				}
-				int del = cache.del(keys);
-				integer(ctx, del);
-			}
-			// *4,$6,exists,$1,a,$1,b,$1,c
-			case "EXISTS" -> {
-				int len = (args.length - 3) / 2;
-				String[] keys = new String[len];
-				for (int i = 0; i < len; i++) {
-					keys[i] = args[4 + i * 2];
-				}
-				integer(ctx, cache.exists(keys));
-			}
-			// *4,$4,mget,$1,a,$1,b,$1,c
-			case "MGET" -> {
-				int len = (args.length - 3) / 2;
-				String[] keys = new String[len];
-				for (int i = 0; i < len; i++) {
-					keys[i] = args[4 + i * 2];
-				}
-				array(ctx, cache.mget(keys));
-			}
-			// *5,$4,mset,$1,a,$3,111,$1,b,$3,222
-			case "MSET" -> {
-				int len = (args.length - 3) / 4;
-				String[] keys = new String[len];
-				String[] vals = new String[len];
-				for (int i = 0; i < len; i++) {
-					keys[i] = args[4 + i * 4];
-					vals[i] = args[6 + i * 4];
-				}
-				cache.mset(keys, vals);
-				simpleString(ctx, OK);
-			}
-			// *2,$4,incr,$1,a
-			case "INCR" -> {
-				String key = args[4];
-				try {
-					integer(ctx, cache.incr(key));
-				} catch (NumberFormatException nfe) {
-					error(ctx, "NFE " + key + " value[" + cache.get(key) + "] is not an integer.");
-				}
-			}
-			// *2,$4,decr,$1,a
-			case "DECR" -> {
-				String key = args[4];
-				try {
-					integer(ctx, cache.decr(key));
-				} catch (NumberFormatException nfe) {
-					error(ctx, "NFE " + key + " value is not an integer.");
-				}
-			}
-			default -> simpleString(ctx, OK);
 		}
 	}
 
