@@ -21,3 +21,4 @@
 * 实现 redis 部分 common 和 string 类型指令处理
 * 通过命令模式重构代码
 * 增加 list 类型指令
+* 增加 set 类型指令

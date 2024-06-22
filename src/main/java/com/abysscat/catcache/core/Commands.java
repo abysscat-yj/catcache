@@ -2,22 +2,28 @@ package com.abysscat.catcache.core;
 
 import com.abysscat.catcache.command.Command;
 import com.abysscat.catcache.command.common.CommandCommand;
-import com.abysscat.catcache.command.string.DecrCommand;
-import com.abysscat.catcache.command.string.DelCommand;
-import com.abysscat.catcache.command.string.ExistsCommand;
-import com.abysscat.catcache.command.string.GetCommand;
-import com.abysscat.catcache.command.string.IncrCommand;
 import com.abysscat.catcache.command.common.InfoCommand;
+import com.abysscat.catcache.command.common.PingCommand;
 import com.abysscat.catcache.command.list.LindexCommand;
 import com.abysscat.catcache.command.list.LlenCommand;
 import com.abysscat.catcache.command.list.LpopCommand;
 import com.abysscat.catcache.command.list.LpushCommand;
 import com.abysscat.catcache.command.list.LrangeCommand;
-import com.abysscat.catcache.command.string.MgetCommand;
-import com.abysscat.catcache.command.string.MsetCommand;
-import com.abysscat.catcache.command.common.PingCommand;
 import com.abysscat.catcache.command.list.RpopCommand;
 import com.abysscat.catcache.command.list.RpushCommand;
+import com.abysscat.catcache.command.set.SaddCommand;
+import com.abysscat.catcache.command.set.ScardCommand;
+import com.abysscat.catcache.command.set.SismemberCommand;
+import com.abysscat.catcache.command.set.SmembersCommand;
+import com.abysscat.catcache.command.set.SpopCommand;
+import com.abysscat.catcache.command.set.SremCommand;
+import com.abysscat.catcache.command.string.DecrCommand;
+import com.abysscat.catcache.command.string.DelCommand;
+import com.abysscat.catcache.command.string.ExistsCommand;
+import com.abysscat.catcache.command.string.GetCommand;
+import com.abysscat.catcache.command.string.IncrCommand;
+import com.abysscat.catcache.command.string.MgetCommand;
+import com.abysscat.catcache.command.string.MsetCommand;
 import com.abysscat.catcache.command.string.SetCommand;
 import com.abysscat.catcache.command.string.StrlenCommand;
 
@@ -40,12 +46,13 @@ public class Commands {
 	}
 
 	private static void initCommands() {
-		// common commands
+
+		// common
 		register(new PingCommand());
 		register(new InfoCommand());
 		register(new CommandCommand());
 
-		// string commands
+		// string
 		register(new SetCommand());
 		register(new GetCommand());
 		register(new StrlenCommand());
@@ -56,8 +63,7 @@ public class Commands {
 		register(new MsetCommand());
 		register(new MgetCommand());
 
-		// list commands
-		// Lpush, Rpush, Lpop, Rpop, Llen, Lindex, Lrange
+		// list
 		register(new LpushCommand());
 		register(new LpopCommand());
 		register(new RpopCommand());
@@ -65,6 +71,14 @@ public class Commands {
 		register(new LlenCommand());
 		register(new LindexCommand());
 		register(new LrangeCommand());
+
+		// set
+		register(new SaddCommand());
+		register(new SmembersCommand());
+		register(new SremCommand());
+		register(new ScardCommand());
+		register(new SpopCommand());
+		register(new SismemberCommand());
 
 	}
 
