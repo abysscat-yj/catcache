@@ -4,6 +4,13 @@ import com.abysscat.catcache.command.Command;
 import com.abysscat.catcache.command.common.CommandCommand;
 import com.abysscat.catcache.command.common.InfoCommand;
 import com.abysscat.catcache.command.common.PingCommand;
+import com.abysscat.catcache.command.hash.HdelCommand;
+import com.abysscat.catcache.command.hash.HexistsCommand;
+import com.abysscat.catcache.command.hash.HgetCommand;
+import com.abysscat.catcache.command.hash.HgetallCommand;
+import com.abysscat.catcache.command.hash.HlenCommand;
+import com.abysscat.catcache.command.hash.HmgetCommand;
+import com.abysscat.catcache.command.hash.HsetCommand;
 import com.abysscat.catcache.command.list.LindexCommand;
 import com.abysscat.catcache.command.list.LlenCommand;
 import com.abysscat.catcache.command.list.LpopCommand;
@@ -79,6 +86,15 @@ public class Commands {
 		register(new ScardCommand());
 		register(new SpopCommand());
 		register(new SismemberCommand());
+
+		// hash
+		register(new HsetCommand());
+		register(new HgetCommand());
+		register(new HgetallCommand());
+		register(new HlenCommand());
+		register(new HdelCommand());
+		register(new HexistsCommand());
+		register(new HmgetCommand());
 
 	}
 
