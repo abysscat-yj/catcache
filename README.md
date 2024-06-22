@@ -18,6 +18,6 @@
 
 ## 当前进展
 * 基于 netty 完成 mock redis server 初版，可通过 redis-cli 发送指令
-* 实现 redis 部分command和string类型指令处理
+* 实现 redis 部分 common 和 string 类型指令处理
 * 通过命令模式重构代码
-* 增加list类型指令
+* 增加 list 类型指令

@@ -1,4 +1,4 @@
-package com.abysscat.catcache.core;
+package com.abysscat.catcache.model;
 
 /**
  * reply type enum.

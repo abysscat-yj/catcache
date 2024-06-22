@@ -1,9 +1,9 @@
-package com.abysscat.catcache.command;
+package com.abysscat.catcache.command.common;
 
-import com.abysscat.catcache.core.Command;
+import com.abysscat.catcache.command.Command;
 import com.abysscat.catcache.core.Commands;
 import com.abysscat.catcache.core.CatCache;
-import com.abysscat.catcache.core.Reply;
+import com.abysscat.catcache.model.Reply;
 
 /**
  * Command command.

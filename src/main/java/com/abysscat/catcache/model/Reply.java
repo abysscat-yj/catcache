@@ -1,4 +1,4 @@
-package com.abysscat.catcache.core;
+package com.abysscat.catcache.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,7 @@
-package com.abysscat.catcache.core;
+package com.abysscat.catcache.command;
+
+import com.abysscat.catcache.core.CatCache;
+import com.abysscat.catcache.model.Reply;
 
 /**
  * command interface.

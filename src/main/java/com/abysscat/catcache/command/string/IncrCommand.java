@@ -1,24 +1,24 @@
-package com.abysscat.catcache.command;
+package com.abysscat.catcache.command.string;
 
-import com.abysscat.catcache.core.Command;
+import com.abysscat.catcache.command.Command;
 import com.abysscat.catcache.core.CatCache;
-import com.abysscat.catcache.core.Reply;
+import com.abysscat.catcache.model.Reply;
 
 /**
- * Get command.
+ * Incr command.
  *
  * @Author: abysscat-yj
  * @Create: 2024/6/20 0:54
  */
-public class GetCommand implements Command {
+public class IncrCommand implements Command {
     @Override
     public String name() {
-        return "GET";
+        return "INCR";
     }
 
     @Override
     public Reply<?> exec(CatCache cache, String[] args) {
         String key = getKey(args);
-        return Reply.bulkString(cache.get(key));
+        return Reply.integer(cache.incr(key));
     }
 }

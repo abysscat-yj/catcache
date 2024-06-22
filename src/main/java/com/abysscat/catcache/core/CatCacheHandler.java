@@ -1,5 +1,7 @@
 package com.abysscat.catcache.core;
 
+import com.abysscat.catcache.command.Command;
+import com.abysscat.catcache.model.Reply;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,7 +40,7 @@ public class CatCacheHandler extends SimpleChannelInboundHandler<String> {
 		Command command = Commands.get(cmd);
 		if (command != null) {
 			Reply<?> reply = command.exec(cache, args);
-			System.out.println("CMD[" + cmd + "] => " + reply.type + " => " + reply.value);
+			System.out.println("CMD[" + cmd + "] => " + reply.getType() + " => " + reply.getValue());
 			replyContext(ctx, reply);
 		} else {
 			Reply<?> reply = Reply.error("ERR unsupported command '" + cmd + "'");

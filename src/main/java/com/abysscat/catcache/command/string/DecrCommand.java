@@ -1,8 +1,8 @@
-package com.abysscat.catcache.command;
+package com.abysscat.catcache.command.string;
 
-import com.abysscat.catcache.core.Command;
+import com.abysscat.catcache.command.Command;
 import com.abysscat.catcache.core.CatCache;
-import com.abysscat.catcache.core.Reply;
+import com.abysscat.catcache.model.Reply;
 
 /**
  * Decr command.
