@@ -33,6 +33,12 @@ import com.abysscat.catcache.command.string.MgetCommand;
 import com.abysscat.catcache.command.string.MsetCommand;
 import com.abysscat.catcache.command.string.SetCommand;
 import com.abysscat.catcache.command.string.StrlenCommand;
+import com.abysscat.catcache.command.zset.ZaddCommand;
+import com.abysscat.catcache.command.zset.ZcardCommand;
+import com.abysscat.catcache.command.zset.ZcountCommand;
+import com.abysscat.catcache.command.zset.ZrankCommand;
+import com.abysscat.catcache.command.zset.ZremCommand;
+import com.abysscat.catcache.command.zset.ZscoreCommand;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -95,6 +101,14 @@ public class Commands {
 		register(new HdelCommand());
 		register(new HexistsCommand());
 		register(new HmgetCommand());
+
+		// zset
+		register(new ZaddCommand());
+		register(new ZcardCommand());
+		register(new ZscoreCommand());
+		register(new ZremCommand());
+		register(new ZrankCommand());
+		register(new ZcountCommand());
 
 	}
 

@@ -1,6 +1,7 @@
 package com.abysscat.catcache.core;
 
 import com.abysscat.catcache.model.CacheEntry;
+import com.abysscat.catcache.model.ZsetEntry;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -307,5 +308,62 @@ public class CatCache {
 	}
 
 	// ===============  4. hash end ===========
+
+
+	// ===============  5. zset  ===========
+	public Integer zadd(String key, String[] values, double[] scores) {
+		CacheEntry<LinkedHashSet<ZsetEntry>> entry = (CacheEntry<LinkedHashSet<ZsetEntry>>) CACHE_MAP.get(key);
+		if (entry == null) {
+			entry = new CacheEntry<>(new LinkedHashSet<>());
+			this.CACHE_MAP.put(key, entry);
+		}
+		LinkedHashSet<ZsetEntry> set = entry.getValue();
+		for (int i = 0; i < values.length; i++) {
+			set.add(new ZsetEntry(values[i], scores[i]));
+		}
+		return values.length;
+	}
+
+	public Integer zcard(String key) {
+		CacheEntry<?> entry = CACHE_MAP.get(key);
+		if (entry == null) return null;
+		LinkedHashSet<?> set = (LinkedHashSet<?>) entry.getValue();
+		return set.size();
+	}
+
+	public Integer zcount(String key, double min, double max) {
+		CacheEntry<?> entry = CACHE_MAP.get(key);
+		if (entry == null) return null;
+		LinkedHashSet<ZsetEntry> set = (LinkedHashSet<ZsetEntry>) entry.getValue();
+		return (int) set.stream().filter(x -> x.getScore() >= min && x.getScore() <= max).count();
+	}
+
+	public Double zscore(String key, String val) {
+		CacheEntry<?> entry = CACHE_MAP.get(key);
+		if (entry == null) return null;
+		LinkedHashSet<ZsetEntry> set = (LinkedHashSet<ZsetEntry>) entry.getValue();
+		return set.stream().filter(x -> x.getValue().equals(val))
+				.map(ZsetEntry::getScore).findFirst().orElse(null);
+	}
+
+	public Integer zrank(String key, String val) {
+		CacheEntry<?> entry = CACHE_MAP.get(key);
+		if (entry == null) return null;
+		LinkedHashSet<ZsetEntry> set = (LinkedHashSet<ZsetEntry>) entry.getValue();
+		Double zscore = zscore(key, val);
+		if (zscore == null) return null;
+		return (int) set.stream().filter(x -> x.getScore() < zscore).count();
+	}
+
+	public Integer zrem(String key, String[] vals) {
+		CacheEntry<?> entry = CACHE_MAP.get(key);
+		if (entry == null) return null;
+		LinkedHashSet<ZsetEntry> set = (LinkedHashSet<ZsetEntry>) entry.getValue();
+		return vals == null ? 0 : (int) Arrays.stream(vals)
+				.map(x -> set.removeIf(y -> y.getValue().equals(x)))
+				.filter(x -> x).count();
+	}
+
+	// ===============  5. zset end ===========
 
 }
