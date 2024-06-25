@@ -258,7 +258,7 @@ public class CatCache {
 		for (int i = 0; i < hkeys.length; i++) {
 			map.put(hkeys[i], hvals[i]);
 		}
-		return hkeys.length;
+		return (int) Arrays.stream(hkeys).distinct().count();
 	}
 
 	public String hget(String key, String hkey) {
@@ -326,14 +326,14 @@ public class CatCache {
 
 	public Integer zcard(String key) {
 		CacheEntry<?> entry = CACHE_MAP.get(key);
-		if (entry == null) return null;
+		if (entry == null) return 0;
 		LinkedHashSet<?> set = (LinkedHashSet<?>) entry.getValue();
 		return set.size();
 	}
 
 	public Integer zcount(String key, double min, double max) {
 		CacheEntry<?> entry = CACHE_MAP.get(key);
-		if (entry == null) return null;
+		if (entry == null) return 0;
 		LinkedHashSet<ZsetEntry> set = (LinkedHashSet<ZsetEntry>) entry.getValue();
 		return (int) set.stream().filter(x -> x.getScore() >= min && x.getScore() <= max).count();
 	}
